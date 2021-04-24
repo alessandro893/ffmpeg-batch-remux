@@ -15,7 +15,8 @@ ___________________
 -  (script arg1 arg2)  
 -  arg1 = path to video files folder
 -  arg2 = path to audio files folder
-+   remux    /path-to-video_files/    /path-to-audio_files/
+-  arg3 (unnecessary) = additional ffmpeg arguments
++   /bin/remux    /path-to-video_files/    /path-to-audio_files/
 
 
 # Important:
