@@ -1,26 +1,20 @@
 #!/bin/sh
 
-FOLDER="$1"
+VIDEO="$1"
 AUDIO="$2"
-cd "$FOLDER"
+ARGS="$3"
+
+if (test "$1" = "")
+then
+  echo "Help:"
+  echo "-Execute file in terminal and append 2-3 arguments:"
+  echo "-(1=video source, 2=audio source, 3=ffmpeg arguments (eg. -t 00:05:00 for 5min duration))"
+  echo "Example:"
+  echo "-/bin/remux /video-source-folder /audio-source-folder -t 00:05:00"
+  exit
+fi
+
+cd "$VIDEO"
 mkdir remuxed
 
-for i in *.mkv; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mka" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mkv; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.ac3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mkv; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mp3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mkv; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.aac" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-
-for i in *.avi; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mka" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.avi; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.ac3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.avi; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mp3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.avi; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.aac" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-
-for i in *.mp4; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mka" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mp4; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.ac3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mp4; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mp3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.mp4; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.aac" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-
-for i in *.m4v; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mka" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.m4v; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.ac3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.m4v; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.mp3" -map 0:v -map 1:a -c copy "remuxed/$i"; done
-for i in *.m4v; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}.aac" -map 0:v -map 1:a -c copy "remuxed/$i"; done
+for i in *.*; do ffmpeg -hwaccel videotoolbox -i "$i" -i "$AUDIO""/${i%.*}."* $ARGS -map 0:v -map 1:a -c copy "remuxed/$i"; done
